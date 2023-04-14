@@ -36,4 +36,5 @@ public class Servico implements Serializable {
         this.nomeProfissional = nomeProfissional;
         this.valor = valor;
     }
+
 }

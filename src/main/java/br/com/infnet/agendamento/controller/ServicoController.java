@@ -1,5 +1,6 @@
 package br.com.infnet.agendamento.controller;
 
+import br.com.infnet.agendamento.model.Agendamento;
 import br.com.infnet.agendamento.model.Servico;
 import br.com.infnet.agendamento.service.ServicoService;
 import lombok.AllArgsConstructor;
@@ -31,9 +32,8 @@ public class ServicoController {
     }
 
     @PostMapping("criarServico")
-    public ResponseEntity<String> criarServico(@RequestParam String servico, @RequestParam String profissional, @RequestParam double valor){
-        System.out.println(servico + profissional + valor);
-        servicoService.salvar(new Servico(servico, profissional, valor));
+    public ResponseEntity<String> criarServico(@RequestBody Servico servico){
+        servicoService.salvar(servico);
         return ResponseEntity.ok("Serviço criado");
     }
 
@@ -48,5 +48,18 @@ public class ServicoController {
         }
 
         return ResponseEntity.ok(Map.of("servico", servico));
+    }
+
+    @DeleteMapping("cancelarServico/{idServico}")
+    public ResponseEntity<String> cancelarServico(@PathVariable String idServico){
+        Servico servico = servicoService.getServicoById(Long.valueOf(idServico));
+        if (servico == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Nenhum serviço encontrado com o id " + idServico);
+        }
+        else {
+            servicoService.deletar(Long.valueOf(idServico));
+            return ResponseEntity.status(HttpStatus.OK).body("Servico apagado!");
+        }
+
     }
 }

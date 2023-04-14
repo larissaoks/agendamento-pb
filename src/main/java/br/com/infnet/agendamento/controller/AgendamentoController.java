@@ -55,7 +55,7 @@ public class AgendamentoController {
             Long idCliente = decoderService.getIdCliente(token);
 
             Servico servico = servicoService.getServicoById(Long.valueOf(agenda.getIdServico()));
-            System.out.println(servico.getIdServico());
+
 
             Agendamento newAgenda = new Agendamento(idCliente, agenda.getDataAgendamento(), agenda.getHorarioAgendamento());
             newAgenda.agendarServico(servico);
