@@ -2,6 +2,7 @@ package br.com.infnet.agendamento.controller;
 
 import br.com.infnet.agendamento.model.Agendamento;
 import br.com.infnet.agendamento.model.Servico;
+import br.com.infnet.agendamento.service.DecoderService;
 import br.com.infnet.agendamento.service.ServicoService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,9 @@ public class ServicoController {
 
     @Autowired
     ServicoService servicoService;
+
+    @Autowired
+    DecoderService decoderService;
 
     @GetMapping("listarServicos")
     public ResponseEntity<Map<String, Object>> listarServicos(){

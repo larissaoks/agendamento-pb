@@ -50,12 +50,15 @@ public class AgendamentoController {
     }
 
     @PostMapping("marcarServico")
-    public ResponseEntity marcarServico(@RequestHeader("Authorization") String token, @RequestBody AgendamentoDTO agenda){//@RequestParam String dataAgendamento, @RequestParam String horarioAgendamento, @RequestParam String idServico){
+    public ResponseEntity marcarServico(@RequestHeader("Authorization") String token, @RequestBody AgendamentoDTO agenda){
         try {
             Long idCliente = decoderService.getIdCliente(token);
 
             Servico servico = servicoService.getServicoById(Long.valueOf(agenda.getIdServico()));
 
+            if (agendamentoService.existeAgendamentoExistente(agenda.getDataAgendamento(), agenda.getHorarioAgendamento(), servico.getIdServico())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um agendamento existente com a mesma data, horário e profissional.");
+            }
 
             Agendamento newAgenda = new Agendamento(idCliente, agenda.getDataAgendamento(), agenda.getHorarioAgendamento());
             newAgenda.agendarServico(servico);
